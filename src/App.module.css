@@ -1,0 +1,25 @@
+.button {
+  appearance: none;
+  border: none;
+  background: gray;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 1.3rem;
+}
+
+.buttonRecording {
+  background: red;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.audioContainer {
+  margin-top: 20px;
+}
