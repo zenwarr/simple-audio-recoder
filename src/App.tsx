@@ -1,4 +1,4 @@
-import { createSignal, For, onMount } from "solid-js";
+import { createEffect, createSignal, For, onMount } from "solid-js";
 import styles from "./App.module.css";
 
 
@@ -9,10 +9,39 @@ export default (() => {
 
 export function AudioRecorder() {
   const recorder = new Record();
+  const [ lockMode, setLockMode ] = createSignal(false);
 
   const rec = () => recorder.isRecording();
 
   onMount(() => recorder.loadDevices());
+
+  function onClick() {
+    if (lockMode()) {
+      return;
+    }
+
+    rec() ? recorder.stop() : recorder.start();
+  }
+
+  function onPress() {
+    if (!lockMode()) {
+      return;
+    }
+
+    if (!rec()) {
+      recorder.start();
+    }
+  }
+
+  function onRelease() {
+    if (!lockMode()) {
+      return;
+    }
+
+    if (rec()) {
+      recorder.stop();
+    }
+  }
 
   return <>
     <div class={ styles.container }>
@@ -32,7 +61,16 @@ export function AudioRecorder() {
         }
       </div>
 
-      <button onClick={ () => !rec() ? recorder.start() : recorder.stop() }
+      <div class={ styles.lockModeContainer }>
+        <label>
+          <input type={ "checkbox" } checked={ lockMode() } onChange={ e => setLockMode(e.currentTarget.checked) }/>
+          <span>Lock mode</span>
+        </label>
+      </div>
+
+      <button onClick={ onClick }
+              onMouseDown={ onPress }
+              onmouseup={ onRelease }
               class={ styles.button }
               classList={ { [styles.buttonRecording]: rec() } }>
         {
