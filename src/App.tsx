@@ -70,7 +70,9 @@ export function AudioRecorder() {
 
       <button onClick={ onClick }
               onMouseDown={ onPress }
-              onmouseup={ onRelease }
+              onMouseUp={ onRelease }
+              onTouchStart={ onPress }
+              ontouchend={ onRelease }
               class={ styles.button }
               classList={ { [styles.buttonRecording]: rec() } }>
         {
